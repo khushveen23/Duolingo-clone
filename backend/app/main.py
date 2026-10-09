@@ -78,6 +78,20 @@ class OptionsMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
+class PathNormalizationMiddleware(BaseHTTPMiddleware):
+    """Normalize Vercel serverless path prefixes like /api/index.py or /api/index."""
+    async def dispatch(self, request, call_next):
+        path = request.scope.get("path", "")
+        for prefix in ["/api/index.py", "/api/index"]:
+            if path == prefix or path == prefix + "/":
+                request.scope["path"] = "/"
+                break
+            elif path.startswith(prefix + "/"):
+                request.scope["path"] = path[len(prefix):]
+                break
+        return await call_next(request)
+
+
 # Configure Cross-Origin Resource Sharing (CORS)
 app.add_middleware(
     CORSMiddleware,
@@ -87,6 +101,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(OptionsMiddleware)
+app.add_middleware(PathNormalizationMiddleware)
 
 # Mount Routers under /api
 app.include_router(me_router, prefix=settings.API_V1_STR)
@@ -98,6 +113,8 @@ app.include_router(hearts_router, prefix=settings.API_V1_STR)
 app.include_router(dev_router, prefix=settings.API_V1_STR)
 
 @app.api_route("/", methods=["GET", "POST", "HEAD", "OPTIONS"], tags=["Health"])
+@app.api_route("/api", methods=["GET", "POST", "HEAD", "OPTIONS"], tags=["Health"])
+@app.api_route("/api/", methods=["GET", "POST", "HEAD", "OPTIONS"], tags=["Health"])
 def root():
     return {
         "status": "healthy",
@@ -112,4 +129,5 @@ def health_check():
         "status": "ok",
         "service": settings.PROJECT_NAME,
     }
+
 
