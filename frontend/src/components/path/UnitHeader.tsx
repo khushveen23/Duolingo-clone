@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import type { UnitData } from "@/types";
 
@@ -38,15 +38,15 @@ export function UnitHeader({ unit, unitIndex }: UnitHeaderProps) {
         )}
       </div>
 
-      {/* Guidebook Button */}
-      <button
-        type="button"
+      {/* Guidebook Link Button */}
+      <Link
+        href={`/guidebook?unit=${unit.order}`}
         title="View Guidebook"
-        className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 active:translate-y-0.5 font-extrabold text-xs uppercase tracking-wider backdrop-blur-sm border-2 border-white/30 transition-all shrink-0"
+        className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 active:translate-y-0.5 font-extrabold text-xs uppercase tracking-wider backdrop-blur-sm border-2 border-white/30 transition-all shrink-0 select-none cursor-pointer"
       >
         <BookOpen className="w-4 h-4" />
         <span className="hidden sm:inline">Guidebook</span>
-      </button>
+      </Link>
     </div>
   );
 }
