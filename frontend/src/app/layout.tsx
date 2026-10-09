@@ -1,8 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "Duolingo - The world's best way to learn a language",

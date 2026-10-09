@@ -25,10 +25,10 @@ export function MainLayout({
         <TopBar />
 
         {/* Center & Right Column Container */}
-        <main className="flex-1 flex justify-center pb-20 md:pb-8 pt-2 px-2 sm:px-6">
-          <div className="w-full max-w-5xl flex justify-center gap-8">
+        <main className="flex-1 flex justify-center pb-20 md:pb-8 pt-2 px-3 sm:px-6 w-full max-w-full overflow-x-hidden">
+          <div className="w-full max-w-5xl flex justify-center gap-8 min-w-0">
             {/* Center Content */}
-            <div className="flex-1 max-w-2xl">{children}</div>
+            <div className="flex-1 max-w-2xl min-w-0 w-full">{children}</div>
 
             {/* Right Side Widgets (Desktop) */}
             {showRightPanel && <RightPanel />}
