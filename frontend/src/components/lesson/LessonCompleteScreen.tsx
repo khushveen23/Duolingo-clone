@@ -225,13 +225,14 @@ export function LessonCompleteScreen({
                 const isPast = idx <= currentDayIndex;
                 return (
                   <div key={idx} className="flex flex-col items-center gap-1">
-                    <span className="text-xs font-black text-gray-400">{day}</span>
+                    <span className={`text-xs font-black ${isToday ? "text-orange-500" : "text-gray-400"}`}>{day}</span>
                     <div
                       className={[
                         "w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all",
                         isPast
                           ? "bg-orange-500 text-white shadow-xs"
                           : "bg-gray-200 text-gray-400",
+                        isToday ? "ring-2 ring-orange-300" : "",
                       ].join(" ")}
                     >
                       {isPast ? <Check className="w-4 h-4 stroke-[3]" /> : ""}

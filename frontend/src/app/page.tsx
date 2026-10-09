@@ -5,7 +5,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { PathView } from "@/components/path/PathView";
 import { usePath } from "@/hooks/usePath";
 import { Button } from "@/components/ui/Button";
-import { RefreshCw, AlertCircle, Sparkles } from "lucide-react";
+import { RefreshCw, AlertCircle } from "lucide-react";
 
 export default function HomePage() {
   const { path, loading, error, refresh } = usePath();

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { Flame, Trophy, Check, Zap, AlertCircle } from "lucide-react";
+import { Flame, Trophy } from "lucide-react";
 import { fetchStreak } from "@/lib/api";
 import type { StreakData } from "@/types";
 

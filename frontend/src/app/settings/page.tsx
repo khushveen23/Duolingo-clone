@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -11,15 +11,25 @@ const goals = [10, 20, 30, 50];
 
 export default function SettingsPage() {
   const { user, refresh } = useUser();
-  const [name, setName] = useState("");
-  const [goal, setGoal] = useState(20);
-  const [sound, setSound] = useState(true);
+  const [name, setName] = useState(user?.name ?? "");
+  const [goal, setGoal] = useState(user?.daily_goal_xp ?? 20);
+  const [sound, setSound] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("duo_sound_enabled") !== "false";
+    }
+    return true;
+  });
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  useEffect(() => {
-    if (user) { setName(user.name); setGoal(user.daily_goal_xp); }
-    setSound(localStorage.getItem("duo_sound_enabled") !== "false");
-  }, [user]);
+  const [prevUser, setPrevUser] = useState(user);
+
+  if (user !== prevUser) {
+    setPrevUser(user);
+    if (user) {
+      setName(user.name);
+      setGoal(user.daily_goal_xp);
+    }
+  }
   async function save() {
     setBusy(true); setMessage("");
     try { await updateSettings({ name, daily_goal_xp: goal }); await refresh(); setMessage("Settings saved."); }

@@ -75,8 +75,32 @@ export function useLessonSession({
   }, [lessonId]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let ignore = false;
+    fetchLesson(lessonId)
+      .then((data) => {
+        if (ignore) return;
+        setLesson(data);
+        setQueue(data.exercises);
+        setTotalInitialExercises(data.exercises.length);
+        setCurrentIndex(0);
+        setCompletedCount(0);
+        setMistakesCount(0);
+        setCurrentAnswer(null);
+        setCheckResult(null);
+        setSessionStatus(data.exercises.length > 0 ? "in_exercise" : "completed");
+      })
+      .catch((err) => {
+        if (ignore) return;
+        setErrorMessage(
+          err instanceof Error ? err.message : "Failed to load lesson"
+        );
+        setSessionStatus("error");
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [lessonId]);
 
   // Current active exercise in the queue
   const currentExercise = queue[currentIndex] || null;

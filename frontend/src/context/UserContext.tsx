@@ -53,8 +53,24 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   // Fetch on mount
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    let ignore = false;
+    fetchMe()
+      .then((data) => {
+        if (!ignore) {
+          setUser(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err instanceof Error ? err.message : "Failed to load user");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, loading, error, refresh }}>

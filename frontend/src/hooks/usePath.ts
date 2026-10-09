@@ -27,8 +27,24 @@ export function usePath() {
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let ignore = false;
+    fetchPath()
+      .then((path) => {
+        if (!ignore) {
+          setData(path);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err instanceof Error ? err.message : "Failed to load path");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return { path: data, data, loading, error, refresh: load };
 }

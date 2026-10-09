@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { fetchLeaderboard } from "@/lib/api";
 import type { LeaderboardData } from "@/types";
-import { Trophy, Shield, Flame, Sparkles, Clock, ArrowUpCircle, Check } from "lucide-react";
+import { Trophy, Flame, Clock, ArrowUpCircle } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 
 export default function LeaderboardPage() {

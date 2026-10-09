@@ -15,18 +15,16 @@ import {
   CheckCircle2,
   Clock,
   Award,
-  Star,
   Check,
 } from "lucide-react";
 
 export default function QuestsPage() {
-  const { user, refresh } = useUser();
+  const { user } = useUser();
   const [claimedQuests, setClaimedQuests] = useState<Record<number, boolean>>({});
 
   const dailyGoalProgress = user?.daily_goal_progress ?? 0;
   const dailyGoalTarget = user?.daily_goal_xp ?? 20;
   const streak = user?.streak ?? 0;
-  const xp = user?.xp ?? 0;
 
   const quests = [
     {

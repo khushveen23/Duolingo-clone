@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import type { AnswerResponse } from "@/types";
-import { CheckCircle2, XCircle, ArrowRight } from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 interface FeedbackBarProps {
   status: "in_exercise" | "feedback" | "hearts_empty" | "submitting";
@@ -35,9 +35,12 @@ export function FeedbackBar({
   const isFeedback = status === "feedback";
   const isCorrect = result?.is_correct ?? false;
 
-  // Pick a random encouraging message on each correct answer
+  // Pick an encouraging message on correct answer deterministically
   const successMessage = useMemo(() => {
-    return positiveMessages[Math.floor(Math.random() * positiveMessages.length)];
+    if (!result) return positiveMessages[0];
+    const key = String(result.correct_answer ?? "");
+    const index = key.length % positiveMessages.length;
+    return positiveMessages[index];
   }, [result]);
 
   // Keyboard shortcut listener: Enter key triggers Check or Continue

@@ -34,12 +34,14 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [success, setSuccess] = useState(false);
 
   // Sync state when user prop changes
-  React.useEffect(() => {
+  const [prevUser, setPrevUser] = useState(user);
+  if (user !== prevUser) {
+    setPrevUser(user);
     if (user) {
       setName(user.name);
       setSelectedGoal(user.daily_goal_xp);
     }
-  }, [user]);
+  }
 
   const handleSoundToggle = () => {
     const nextVal = !soundEnabled;

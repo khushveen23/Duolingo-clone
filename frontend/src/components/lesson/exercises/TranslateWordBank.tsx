@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { ExerciseProps } from "./types";
 import { AnimatedCharacter } from "../AnimatedCharacter";
 import { sounds } from "@/lib/sound";
@@ -35,29 +35,21 @@ export function TranslateWordBank({
 
   const character = isFoodRelated ? "chef" : "kung-fu-bird";
 
-  // Available words in bottom bank vs placed words in top answer slot
-  const [bankWords, setBankWords] = useState<WordItem[]>([]);
+  // Placed words in top answer slot
   const [selectedWords, setSelectedWords] = useState<WordItem[]>([]);
+  const [prevExerciseId, setPrevExerciseId] = useState(exercise.id);
 
-  // Initialize once per exercise
-  useEffect(() => {
-    const items = rawWords.map((word, i) => ({
-      id: `${word}-${i}`,
-      text: word,
-    }));
-    setBankWords(items);
+  if (exercise.id !== prevExerciseId) {
+    setPrevExerciseId(exercise.id);
     setSelectedWords([]);
-    onChange([]);
-  }, [exercise.id]);
+  }
 
   // When word is tapped from bank to answer
   const handleAddWord = (item: WordItem) => {
     if (disabled) return;
     sounds.playTap();
     const nextSelected = [...selectedWords, item];
-    const nextBank = bankWords.filter((w) => w.id !== item.id);
     setSelectedWords(nextSelected);
-    setBankWords(nextBank);
     onChange(nextSelected.map((w) => w.text));
   };
 
@@ -66,9 +58,7 @@ export function TranslateWordBank({
     if (disabled) return;
     sounds.playTap();
     const nextSelected = selectedWords.filter((w) => w.id !== item.id);
-    const nextBank = [...bankWords, item];
     setSelectedWords(nextSelected);
-    setBankWords(nextBank);
     onChange(nextSelected.map((w) => w.text));
   };
 

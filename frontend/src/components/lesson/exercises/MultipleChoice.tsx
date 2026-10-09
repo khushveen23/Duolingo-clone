@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import type { ExerciseProps } from "./types";
 import { sounds } from "@/lib/sound";
 import { Volume2 } from "lucide-react";
@@ -11,7 +11,10 @@ export function MultipleChoice({
   onChange,
   disabled,
 }: ExerciseProps) {
-  const options: string[] = exercise.data.options || [];
+  const options = useMemo(
+    () => (exercise.data.options as string[]) || [],
+    [exercise.data.options]
+  );
   const selected = typeof value === "string" ? value : "";
 
   // Support 1, 2, 3, 4 keyboard shortcuts

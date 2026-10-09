@@ -19,18 +19,18 @@ export function HeartsModal({ isOpen, onClose, onRefill, outOfHearts = false }: 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [remainingSeconds, setRemainingSeconds] = useState<number>(0);
-
   const hearts = user?.hearts ?? 5;
   const maxHearts = user?.max_hearts ?? 5;
   const gems = user?.gems ?? 0;
   const REFILL_COST = 350;
 
-  useEffect(() => {
-    if (user?.seconds_until_next_heart) {
-      setRemainingSeconds(user.seconds_until_next_heart);
-    }
-  }, [user?.seconds_until_next_heart]);
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(user?.seconds_until_next_heart ?? 0);
+  const [prevSeconds, setPrevSeconds] = useState(user?.seconds_until_next_heart ?? 0);
+
+  if (user?.seconds_until_next_heart !== prevSeconds) {
+    setPrevSeconds(user?.seconds_until_next_heart ?? 0);
+    setRemainingSeconds(user?.seconds_until_next_heart ?? 0);
+  }
 
   // Live countdown timer ticker
   useEffect(() => {

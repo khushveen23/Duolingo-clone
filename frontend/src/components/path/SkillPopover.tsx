@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
-import { Sparkles, Crown, CheckCircle2, Play, BookMarked, X } from "lucide-react";
+import { Sparkles, Crown, CheckCircle2, Play, X } from "lucide-react";
 import type { SkillNode } from "@/types";
 import Link from "next/link";
 

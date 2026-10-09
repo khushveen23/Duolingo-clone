@@ -4,7 +4,7 @@ import React from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { ProgressBar } from "@/components/ui/ProgressBar";
-import { Award, CheckCircle2, Lock, Calendar, Target } from "lucide-react";
+import { Award, CheckCircle2, Lock, Calendar } from "lucide-react";
 import type { AchievementProgress } from "@/types";
 
 interface AchievementModalProps {

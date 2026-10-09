@@ -1,20 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { ExerciseProps } from "./types";
 import { sounds } from "@/lib/sound";
 import { Check } from "lucide-react";
-
-interface MatchPairsProps extends ExerciseProps {
-  onMistake?: () => void;
-}
 
 export function MatchPairs({
   exercise,
   onChange,
   disabled,
-  onMistake,
-}: MatchPairsProps) {
+}: ExerciseProps) {
   const leftItems: string[] = exercise.data.left_items || [];
   const rightItems: string[] = exercise.data.right_items || [];
 
@@ -24,49 +19,46 @@ export function MatchPairs({
   // Pairs successfully matched by the learner: { left: right }
   const [matchedPairs, setMatchedPairs] = useState<Record<string, string>>({});
   const [wrongPair, setWrongPair] = useState<{ left: string; right: string } | null>(null);
+  const [prevExerciseId, setPrevExerciseId] = useState(exercise.id);
 
-  // Reset state when exercise changes
-  useEffect(() => {
+  if (exercise.id !== prevExerciseId) {
+    setPrevExerciseId(exercise.id);
     setSelectedLeft(null);
     setSelectedRight(null);
     setMatchedPairs({});
     setWrongPair(null);
-    onChange([]);
-  }, [exercise.id]);
-
-  // When both left and right are selected, evaluate the pairing
-  useEffect(() => {
-    if (!selectedLeft || !selectedRight || disabled) return;
-
-    // Check if the pair is correct by checking against pairs if provided, or submitting as pair
-    // In Duolingo match pairs, client records the match
-    const newMatched = { ...matchedPairs, [selectedLeft]: selectedRight };
-    setMatchedPairs(newMatched);
-    sounds.playTap();
-
-    // Transform matched into list format for backend validation
-    const pairsList = Object.entries(newMatched).map(([left, right]) => ({
-      left,
-      right,
-    }));
-    onChange(pairsList);
-
-    setSelectedLeft(null);
-    setSelectedRight(null);
-  }, [selectedLeft, selectedRight, disabled, matchedPairs, onChange]);
+  }
 
   const handleSelectLeft = (item: string) => {
     if (disabled || matchedPairs[item]) return;
     sounds.playTap();
-    setSelectedLeft((prev) => (prev === item ? null : item));
     setWrongPair(null);
+
+    if (selectedRight) {
+      const newMatched = { ...matchedPairs, [item]: selectedRight };
+      setMatchedPairs(newMatched);
+      onChange(Object.entries(newMatched).map(([left, right]) => ({ left, right })));
+      setSelectedLeft(null);
+      setSelectedRight(null);
+    } else {
+      setSelectedLeft((prev) => (prev === item ? null : item));
+    }
   };
 
   const handleSelectRight = (item: string) => {
     if (disabled || Object.values(matchedPairs).includes(item)) return;
     sounds.playTap();
-    setSelectedRight((prev) => (prev === item ? null : item));
     setWrongPair(null);
+
+    if (selectedLeft) {
+      const newMatched = { ...matchedPairs, [selectedLeft]: item };
+      setMatchedPairs(newMatched);
+      onChange(Object.entries(newMatched).map(([left, right]) => ({ left, right })));
+      setSelectedLeft(null);
+      setSelectedRight(null);
+    } else {
+      setSelectedRight((prev) => (prev === item ? null : item));
+    }
   };
 
   return (

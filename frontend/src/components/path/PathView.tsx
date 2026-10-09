@@ -5,7 +5,7 @@ import type { PathData, SkillNode as SkillNodeType } from "@/types";
 import { UnitHeader } from "./UnitHeader";
 import { SkillNode } from "./SkillNode";
 import { SkillPopover } from "./SkillPopover";
-import { Award, Gift, Sparkles } from "lucide-react";
+import { Gift, Sparkles } from "lucide-react";
 
 interface PathViewProps {
   path: PathData;
@@ -25,7 +25,9 @@ export function PathView({ path }: PathViewProps) {
   }
 
   // Find the first available skill across all units to highlight as "next up"
-  let nextUpFound = false;
+  const nextUpSkillId = path.units
+    .flatMap((u) => u.skills)
+    .find((s) => s.status === "available")?.id;
 
   return (
     <div className="w-full max-w-xl mx-auto px-4 py-6">
@@ -37,11 +39,7 @@ export function PathView({ path }: PathViewProps) {
           {/* Unit Skills Column with serpentine path layout */}
           <div className="flex flex-col items-center relative py-2">
             {unit.skills.map((skill, skillIdx) => {
-              let isNextUp = false;
-              if (!nextUpFound && skill.status === "available") {
-                isNextUp = true;
-                nextUpFound = true;
-              }
+              const isNextUp = skill.id === nextUpSkillId;
 
               return (
                 <SkillNode
