@@ -61,6 +61,23 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
+
+class OptionsMiddleware(BaseHTTPMiddleware):
+    """Intercept all OPTIONS requests and return 200 OK with full CORS headers."""
+    async def dispatch(self, request, call_next):
+        if request.method == "OPTIONS":
+            response = Response(content="OK", status_code=200, media_type="text/plain")
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
+            response.headers["Access-Control-Allow-Headers"] = "*"
+            response.headers["Access-Control-Max-Age"] = "86400"
+            return response
+        return await call_next(request)
+
+
 # Configure Cross-Origin Resource Sharing (CORS)
 app.add_middleware(
     CORSMiddleware,
@@ -69,12 +86,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.options("/{full_path:path}")
-async def options_handler(full_path: str):
-    """Catch-all handler for preflight and raw OPTIONS requests."""
-    return {"status": "ok"}
+app.add_middleware(OptionsMiddleware)
 
 # Mount Routers under /api
 app.include_router(me_router, prefix=settings.API_V1_STR)
@@ -85,7 +97,7 @@ app.include_router(profile_router, prefix=settings.API_V1_STR)
 app.include_router(hearts_router, prefix=settings.API_V1_STR)
 app.include_router(dev_router, prefix=settings.API_V1_STR)
 
-@app.get("/", tags=["Health"])
+@app.api_route("/", methods=["GET", "POST", "HEAD", "OPTIONS"], tags=["Health"])
 def root():
     return {
         "status": "healthy",
@@ -94,9 +106,10 @@ def root():
         "docs_url": "/docs",
     }
 
-@app.get("/api/health", tags=["Health"])
+@app.api_route("/api/health", methods=["GET", "POST", "HEAD", "OPTIONS"], tags=["Health"])
 def health_check():
     return {
         "status": "ok",
         "service": settings.PROJECT_NAME,
     }
+
