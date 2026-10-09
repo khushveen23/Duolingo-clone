@@ -18,8 +18,8 @@ import type {
   LessonCompleteResponse,
 } from "@/types";
 
-// Read the base URL once at module load — fails loudly if missing.
-const BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
+// Read the base URL once at module load — defaults to empty string for same-origin proxying
+const BASE = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
 
 // Generic fetch wrapper that throws a descriptive error on non-2xx responses.
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
