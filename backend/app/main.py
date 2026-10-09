@@ -64,12 +64,17 @@ app = FastAPI(
 # Configure Cross-Origin Resource Sharing (CORS)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_origin_regex=r"https://.*\.vercel\.app",
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.options("/{full_path:path}")
+async def options_handler(full_path: str):
+    """Catch-all handler for preflight and raw OPTIONS requests."""
+    return {"status": "ok"}
 
 # Mount Routers under /api
 app.include_router(me_router, prefix=settings.API_V1_STR)
