@@ -78,8 +78,8 @@ export function FillInBlank({
               className={[
                 "px-5 py-3 rounded-2xl border-2 border-b-4 font-extrabold text-base transition-all select-none",
                 isSelected
-                  ? "border-duo-blue bg-blue-50 text-duo-blue border-b-4 translate-y-0.5"
-                  : "border-[#e5e5e5] bg-white text-duo-text-dark hover:bg-gray-50 active:translate-y-1 active:border-b-2",
+                  ? "border-duo-blue bg-blue-50 dark:bg-[#1a334b] text-duo-blue border-b-4 translate-y-0.5"
+                  : "border-[#e5e5e5] dark:border-[#2e3856] bg-white dark:bg-[#1a2c35] text-duo-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-[#203642] active:translate-y-1 active:border-b-2",
               ].join(" ")}
             >
               {opt}

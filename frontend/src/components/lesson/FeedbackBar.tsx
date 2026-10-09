@@ -92,9 +92,9 @@ export function FeedbackBar({
         "fixed bottom-0 left-0 right-0 z-40 transition-all duration-200 border-t-2",
         isFeedback
           ? isCorrect
-            ? "bg-[#d7ffb8] border-green-300 py-6 sm:py-8"
-            : "bg-[#ffdfe0] border-red-300 py-6 sm:py-8"
-          : "bg-white border-[#e5e5e5] py-5",
+            ? "bg-[#d7ffb8] dark:bg-[#132f1e] border-green-300 dark:border-green-800 py-6 sm:py-8"
+            : "bg-[#ffdfe0] dark:bg-[#3b181b] border-red-300 dark:border-red-900 py-6 sm:py-8"
+          : "bg-white dark:bg-[#1a2c35] border-[#e5e5e5] dark:border-[#2e3856] py-5",
       ].join(" ")}
     >
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 flex items-center justify-between gap-4">
@@ -103,29 +103,29 @@ export function FeedbackBar({
           <div className="flex items-center gap-3.5 min-w-0">
             {isCorrect ? (
               <>
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-duo-green shrink-0 shadow-xs">
+                <div className="w-12 h-12 rounded-full bg-white dark:bg-[#1a334b] flex items-center justify-center text-duo-green shrink-0 shadow-xs">
                   <CheckCircle2 className="w-9 h-9 fill-duo-green text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-duo-green-dark tracking-tight">
+                  <h3 className="text-xl sm:text-2xl font-black text-duo-green-dark dark:text-green-400 tracking-tight">
                     {successMessage}
                   </h3>
                 </div>
               </>
             ) : (
               <>
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-duo-red shrink-0 shadow-xs">
+                <div className="w-12 h-12 rounded-full bg-white dark:bg-[#203642] flex items-center justify-center text-duo-red shrink-0 shadow-xs">
                   <XCircle className="w-9 h-9 fill-duo-red text-white" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-lg sm:text-xl font-black text-duo-red tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-black text-duo-red dark:text-red-400 tracking-tight">
                     Correct solution:
                   </h3>
-                  <p className="text-sm sm:text-base font-bold text-duo-red/90 truncate">
+                  <p className="text-sm sm:text-base font-bold text-duo-red/90 dark:text-white truncate">
                     {formattedSolution}
                   </p>
                   {result?.explanation && (
-                    <p className="text-xs text-duo-text mt-0.5">
+                    <p className="text-xs text-duo-text dark:text-gray-300 mt-0.5">
                       {result.explanation}
                     </p>
                   )}

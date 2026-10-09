@@ -87,16 +87,16 @@ export function Sidebar() {
                 className={[
                   "flex items-center gap-4 px-3 py-3 rounded-xl font-extrabold text-sm tracking-wider transition-colors",
                   isActive
-                    ? "bg-blue-50 text-duo-blue border-l-4 border-duo-blue pl-2"
-                    : "text-[#4b4b4b] hover:bg-gray-100",
+                    ? "bg-blue-50 dark:bg-[#1a334b] text-duo-blue border-l-4 border-duo-blue pl-2"
+                    : "text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#203642]",
                 ].join(" ")}
               >
                 <Icon
                   size={22}
                   strokeWidth={2.5}
-                  className={isActive ? "text-duo-blue" : "text-[#afafaf]"}
+                  className={isActive ? "text-duo-blue" : "text-[#afafaf] dark:text-white"}
                 />
-                {label}
+                <span className="dark:text-white">{label}</span>
               </Link>
             );
           })}
@@ -109,16 +109,16 @@ export function Sidebar() {
               className={[
                 "w-full flex items-center gap-4 px-3 py-3 rounded-xl font-extrabold text-sm tracking-wider transition-colors",
                 moreOpen
-                  ? "bg-blue-50 text-duo-blue border-l-4 border-duo-blue pl-2"
-                  : "text-[#4b4b4b] hover:bg-gray-100",
+                  ? "bg-blue-50 dark:bg-[#1a334b] text-duo-blue border-l-4 border-duo-blue pl-2"
+                  : "text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#203642]",
               ].join(" ")}
             >
               <MoreHorizontal
                 size={22}
                 strokeWidth={2.5}
-                className={moreOpen ? "text-duo-blue" : "text-[#afafaf]"}
+                className={moreOpen ? "text-duo-blue" : "text-[#afafaf] dark:text-white"}
               />
-              <span>MORE</span>
+              <span className="dark:text-white">MORE</span>
             </button>
 
             {/* Floating Popover Menu */}

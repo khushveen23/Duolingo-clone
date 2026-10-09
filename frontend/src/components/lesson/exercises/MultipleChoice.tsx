@@ -67,20 +67,20 @@ export function MultipleChoice({
               className={[
                 "w-full flex items-center justify-between p-4 rounded-2xl border-2 border-b-4 font-extrabold text-base sm:text-lg transition-all select-none text-left",
                 isSelected
-                  ? "border-duo-blue bg-blue-50 text-duo-blue border-b-4 translate-y-0.5"
-                  : "border-[#e5e5e5] bg-white text-duo-text-dark hover:bg-gray-50 active:translate-y-1 active:border-b-2",
+                  ? "border-duo-blue bg-blue-50 dark:bg-[#1a334b] text-duo-blue border-b-4 translate-y-0.5"
+                  : "border-[#e5e5e5] dark:border-[#2e3856] bg-white dark:bg-[#1a2c35] text-duo-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-[#203642] active:translate-y-1 active:border-b-2",
                 disabled ? "cursor-default" : "cursor-pointer",
               ].join(" ")}
             >
-              <span className="font-extrabold">{opt}</span>
+              <span className="font-extrabold dark:text-white">{opt}</span>
 
               {/* Number key badge hint */}
               <span
                 className={[
                   "w-7 h-7 rounded-lg border flex items-center justify-center text-xs font-black shrink-0 transition-colors",
                   isSelected
-                    ? "border-duo-blue text-duo-blue bg-white"
-                    : "border-gray-300 text-gray-400 bg-gray-50",
+                    ? "border-duo-blue text-duo-blue bg-white dark:bg-[#1a334b]"
+                    : "border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-300 bg-gray-50 dark:bg-[#203642]",
                 ].join(" ")}
               >
                 {idx + 1}
