@@ -161,6 +161,7 @@ export interface ExerciseClientData {
   word_bank?: string[];
   left_items?: string[];
   right_items?: string[];
+  pairs?: Array<{ left: string; right: string }>;
   sentence?: string;
   translation?: string;
   sentence_to_translate?: string;

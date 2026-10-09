@@ -63,9 +63,25 @@ export function FeedbackBar({
   const formattedSolution = useMemo(() => {
     if (!result?.correct_answer) return "";
     if (typeof result.correct_answer === "string") return result.correct_answer;
-    if (Array.isArray(result.correct_answer)) return result.correct_answer.join(" ");
+    if (Array.isArray(result.correct_answer)) {
+      return result.correct_answer
+        .map((item) => {
+          if (typeof item === "object" && item !== null) {
+            if ("left" in item && "right" in item) {
+              return `${item.left} = ${item.right}`;
+            }
+            return Object.entries(item)
+              .map(([k, v]) => `${k} = ${v}`)
+              .join(", ");
+          }
+          return String(item);
+        })
+        .join(", ");
+    }
     if (typeof result.correct_answer === "object") {
-      return JSON.stringify(result.correct_answer);
+      return Object.entries(result.correct_answer)
+        .map(([k, v]) => `${k} = ${v}`)
+        .join(", ");
     }
     return String(result.correct_answer);
   }, [result]);

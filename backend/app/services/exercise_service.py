@@ -74,6 +74,7 @@ class ExerciseService:
             return {
                 "left_items": left_items,
                 "right_items": shuffled_right,
+                "pairs": pairs,
             }
 
         elif exercise_type == "fill_in_blank":
@@ -147,7 +148,8 @@ class ExerciseService:
                         user_map[str(item["left"]).strip().lower()] = str(item["right"]).strip().lower()
 
             is_correct = (user_map == expected_map)
-            return is_correct, pairs, explanation
+            formatted_solution = ", ".join(f"{p['left']} = {p['right']}" for p in pairs)
+            return is_correct, formatted_solution, explanation
 
         elif exercise_type == "fill_in_blank":
             correct = raw_data.get("correct_answer")

@@ -29,33 +29,60 @@ export function MatchPairs({
     setWrongPair(null);
   }
 
-  const handleSelectLeft = (item: string) => {
-    if (disabled || matchedPairs[item]) return;
-    sounds.playTap();
-    setWrongPair(null);
+  // Expected pairs map from exercise data if available
+  const expectedPairs = React.useMemo(() => {
+    const raw: Array<{ left: string; right: string }> = exercise.data.pairs || [];
+    const map: Record<string, string> = {};
+    for (const p of raw) {
+      if (p.left && p.right) {
+        map[p.left.trim().toLowerCase()] = p.right.trim().toLowerCase();
+      }
+    }
+    return map;
+  }, [exercise.data.pairs]);
 
-    if (selectedRight) {
-      const newMatched = { ...matchedPairs, [item]: selectedRight };
+  const handleMatchAttempt = (left: string, right: string) => {
+    const hasValidation = Object.keys(expectedPairs).length > 0;
+    const isCorrect =
+      !hasValidation ||
+      expectedPairs[left.trim().toLowerCase()] === right.trim().toLowerCase();
+
+    if (isCorrect) {
+      sounds.playCorrect();
+      const newMatched = { ...matchedPairs, [left]: right };
       setMatchedPairs(newMatched);
-      onChange(Object.entries(newMatched).map(([left, right]) => ({ left, right })));
+      onChange(Object.entries(newMatched).map(([l, r]) => ({ left: l, right: r })));
       setSelectedLeft(null);
       setSelectedRight(null);
+      setWrongPair(null);
+    } else {
+      sounds.playIncorrect();
+      setWrongPair({ left, right });
+      setTimeout(() => {
+        setWrongPair(null);
+        setSelectedLeft(null);
+        setSelectedRight(null);
+      }, 650);
+    }
+  };
+
+  const handleSelectLeft = (item: string) => {
+    if (disabled || matchedPairs[item] || wrongPair) return;
+    sounds.playTap();
+
+    if (selectedRight) {
+      handleMatchAttempt(item, selectedRight);
     } else {
       setSelectedLeft((prev) => (prev === item ? null : item));
     }
   };
 
   const handleSelectRight = (item: string) => {
-    if (disabled || Object.values(matchedPairs).includes(item)) return;
+    if (disabled || Object.values(matchedPairs).includes(item) || wrongPair) return;
     sounds.playTap();
-    setWrongPair(null);
 
     if (selectedLeft) {
-      const newMatched = { ...matchedPairs, [selectedLeft]: item };
-      setMatchedPairs(newMatched);
-      onChange(Object.entries(newMatched).map(([left, right]) => ({ left, right })));
-      setSelectedLeft(null);
-      setSelectedRight(null);
+      handleMatchAttempt(selectedLeft, item);
     } else {
       setSelectedRight((prev) => (prev === item ? null : item));
     }
