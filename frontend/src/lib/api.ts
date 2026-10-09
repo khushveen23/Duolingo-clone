@@ -18,8 +18,9 @@ import type {
   LessonCompleteResponse,
 } from "@/types";
 
-// Read the base URL once at module load — defaults to empty string for same-origin proxying
-const BASE = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
+// Always use relative URLs (same-origin) so requests go through the Next.js server proxy.
+// This completely prevents cross-origin requests and eliminates browser CORS preflight (OPTIONS 400) errors.
+const BASE = "";
 
 // Generic fetch wrapper that throws a descriptive error on non-2xx responses.
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
