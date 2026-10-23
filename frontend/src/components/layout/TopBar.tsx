@@ -60,13 +60,22 @@ export function TopBar() {
   return (
     <>
       <header className="sticky top-0 z-30 bg-white border-b-2 border-[#e5e5e5] px-4 h-14 flex items-center justify-between md:justify-end gap-3">
-        {/* Flag — Spanish flag, always visible */}
+        {/* Flag — Spanish flag using flag-icons library */}
         <button
           aria-label="Spanish — language you are learning"
-          className="flex items-center gap-1.5 font-extrabold text-sm hover:bg-gray-100 rounded-xl px-2.5 py-1.5 transition-all active:scale-95 cursor-pointer"
+          className="flex items-center gap-2 hover:bg-gray-100 rounded-xl px-2.5 py-1.5 transition-all active:scale-95 cursor-pointer"
         >
-          <span className="text-2xl leading-none">🇪🇸</span>
-          <span className="hidden sm:inline text-[#4b4b4b] font-extrabold text-xs uppercase tracking-wide">Spanish</span>
+          <span
+            className="fi fi-es"
+            style={{
+              width: "28px",
+              height: "20px",
+              borderRadius: "4px",
+              display: "inline-block",
+              backgroundSize: "cover",
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+            }}
+          />
         </button>
 
         {/* Streak Chip */}
