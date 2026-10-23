@@ -60,8 +60,14 @@ export function TopBar() {
   return (
     <>
       <header className="sticky top-0 z-30 bg-white border-b-2 border-[#e5e5e5] px-4 h-14 flex items-center justify-between md:justify-end gap-3">
-        {/* Flag — Spanish flag emoji */}
-        <div className="md:hidden text-2xl">🇪🇸</div>
+        {/* Flag — Spanish flag, always visible */}
+        <button
+          aria-label="Spanish — language you are learning"
+          className="flex items-center gap-1.5 font-extrabold text-sm hover:bg-gray-100 rounded-xl px-2.5 py-1.5 transition-all active:scale-95 cursor-pointer"
+        >
+          <span className="text-2xl leading-none">🇪🇸</span>
+          <span className="hidden sm:inline text-[#4b4b4b] font-extrabold text-xs uppercase tracking-wide">Spanish</span>
+        </button>
 
         {/* Streak Chip */}
         <StatChip
